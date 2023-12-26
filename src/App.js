@@ -4,6 +4,9 @@ import Sidebar from "./components/Sidebar";
 import Page from "./components/Page";
 import Modal from "./components/Modal";
 
+import store from "./redux/store";
+import { Provider } from "react-redux";
+
 function App() {
   const [components, setComponents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,49 +50,51 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>React Page Builder</h1>
-      <Modal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        position={modalPosition}
-      >
-        <h2>Edit Label</h2>
-        <p>X: {modalPosition.x}</p>
-        <input
-          type="text"
-          placeholder="Enter value"
-          className="inputTypeWrapper"
-          value={modalPosition.x}
-          onChange={(e) => {
-            console.log("e.target.value x==>", e.target.value);
-            // setXModalPosition()
-            setModalPosition({ x: e.target.value, y: modalPosition.y });
-          }}
-        />
-        <p>Y: {modalPosition.y}</p>
-        <input
-          type="text"
-          placeholder="Enter value"
-          className="inputTypeWrapper"
-          value={modalPosition.y}
-          onChange={(e) => {
-            console.log("e.target.value y==>", e.target.value);
-            // setXModalPosition()
-            setModalPosition({ x: modalPosition.x, y: e.target.value });
-          }}
-        />
-      </Modal>
+    <Provider store={store}>
+      <div className="App">
+        <h1>React Page Builder</h1>
+        <Modal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          position={modalPosition}
+        >
+          <h2>Edit Label</h2>
+          <p>X: {modalPosition.x}</p>
+          <input
+            type="text"
+            placeholder="Enter value"
+            className="inputTypeWrapper"
+            value={modalPosition.x}
+            onChange={(e) => {
+              console.log("e.target.value x==>", e.target.value);
+              // setXModalPosition()
+              setModalPosition({ x: e.target.value, y: modalPosition.y });
+            }}
+          />
+          <p>Y: {modalPosition.y}</p>
+          <input
+            type="text"
+            placeholder="Enter value"
+            className="inputTypeWrapper"
+            value={modalPosition.y}
+            onChange={(e) => {
+              console.log("e.target.value y==>", e.target.value);
+              // setXModalPosition()
+              setModalPosition({ x: modalPosition.x, y: e.target.value });
+            }}
+          />
+        </Modal>
 
-      <div className="builder-container">
-        <Page
-          components={components}
-          onDrop={handleDrop}
-          openModal={openModal}
-        />
-        <Sidebar />
+        <div className="builder-container">
+          <Page
+            components={components}
+            onDrop={handleDrop}
+            openModal={openModal}
+          />
+          <Sidebar />
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 
